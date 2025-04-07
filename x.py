@@ -14,7 +14,7 @@ app.secret_key = 'supersecretkey'  # Your secret key
 serializer = SimpleSecureCookieSessionInterface().get_signing_serializer(app)
 
 # Your original cookie
-cookie = 'eyJpc19hZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoidXNlciJ9.Z_QnZw.8kI38hpaav_9-3KX-Z7NZUruMtg'
+cookie = input("what is the cookie: ")
 
 # Deserialize the session data
 data = serializer.loads(cookie)

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, Admin!</h1>
+    <form action="/admin/search" method="POST">
+        <input type="text" name="query" placeholder="Search by ID (e.g., 1)" required>
+        <button type="submit">Search</button>
+    </form>
+    <p>Hint: Use SQL injection (e.g., <code>1 UNION SELECT flag FROM secrets --</code>).</p>
+    <p>Then decrypt the flag using Fernet (key hint: "IT101_CTF_KEY_12345").</p>
+</body>
+</html>

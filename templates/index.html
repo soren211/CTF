@@ -1,16 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>CTF Login</title>
-</head>
-<body>
-    <h1>Login</h1>
+{% extends "base.html" %}
+
+{% block title %}CTF Login{% endblock %}
+
+{% block content %}
+    <h1>Welcome to Soren's CTF Challenge</h1>
+    <p>Your mission is to retrieve the hidden flag from the admin dashboard.</p>
+    
     <form action="/login" method="POST">
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
-    <p>the user credentials are: user ; password123.</p>
-    <p>Hint: if you were to be decoding cookies you would want to use my custom encoder/decoder from github: https://github.com/soren211/CTF</p>
-</body>
-</html>
+    
+    <div class="credential-box">
+        <strong>Given User Credentials:</strong><br>
+        Username: user<br>
+        Password: password123
+    </div>
+    
+    <div class="hint">
+        <strong>Hint:</strong> Many times we have to work our way up to privileges, step by step
+    </div>
+{% endblock %}

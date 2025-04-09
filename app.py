@@ -8,21 +8,29 @@ import os
 
 app = Flask(__name__, template_folder='templates')
 
-# Configure server settings
 app.config.update(
     SECRET_KEY="supersecretkey", 
     SERVER_NAME='localhost:5001',
     PREFERRED_URL_SCHEME='http'
 )
 
+'''
+ less obvious but more clear instrucution
+ cookie for admin be a truefalse 1 or 0 
+ better website 
+ SQLlite is bad go to normal 
+ cool cool
+ 
 
 
-# Encryption setup
+
+'''
+
 raw_key = b"IT101_CTF_Key_32bytes_long_12345"
 key = base64.urlsafe_b64encode(raw_key)
 cipher = Fernet(key)
 
-# Database initialization
+# Database 
 def init_db():
     try:
         if os.path.exists('database.db'):
@@ -50,8 +58,14 @@ def init_db():
         cursor.execute("INSERT INTO users VALUES (1, 'admin', 'password123', 1)")
         cursor.execute("INSERT INTO users VALUES (2, 'user', 'password123', 0)")
         
-        flag = "IT101{YOU_G0T_M3_S053N}"
-        cursor.execute("INSERT INTO secrets VALUES (1, ?)", (flag,))
+        raw_flag = "IT101{S053N5_F1AG_19384372}"
+
+        
+        data_bytes = raw_flag.encode('utf-8')
+        encoded_bytes = base64.b64encode(data_bytes)
+        flag = encoded_bytes.decode('utf-8')
+
+        cursor.execute("INSERT INTO secrets VALUES (239294, ?)", (flag,))
         
         conn.commit()
     except Exception as e:
@@ -78,7 +92,9 @@ def nuke_everything():
 @app.route("/")
 def home():
     if "username" in session:
-        if session.get("is_admin"):
+        # Check the cookie (convert string to int)
+        is_admin = int(request.cookies.get("is_admin", 0))
+        if is_admin:
             return render_template("admin.html")
         return render_template("user.html")
     return render_template("index.html")
@@ -96,45 +112,57 @@ def login():
     
     if user:
         session["username"] = user[1]
-        session["is_admin"] = bool(user[3])
-        return redirect("/")
+        # Set  cookie (1 for admin, 0 for regular user)
+        is_admin = 1 if user[3] else 0
+        resp = make_response(redirect("/"))
+        resp.set_cookie("is_admin", str(is_admin))  #  1/0 value
+        return resp
     return "Login failed! <a href='/'>Try again</a>"
 
-
-# Admin functionality
-@app.route("/admin/search", methods=["GET", "POST"])
+@app.route("/admin/search", methods=["POST"])
 def admin_search():
-    if request.method == "POST":
-        query = request.form.get("query", "")
-        print(f"Query: {query}")
-
-        # Vulnerable SQL query - directly using the input (SQL injection)
+    is_admin = int(request.cookies.get("is_admin", 0))
+    if not is_admin:
+        return "Access denied!", 403
+        
+    query = request.form.get("query", "").strip()
+    
+    try:
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
-
-        try:
-            cursor.execute(f"SELECT flag FROM secrets WHERE id={query}")
-            result = cursor.fetchone()  # Fetch the result of the query
-            if result:
-                # Return the flag if found
-                return f"Result: {result[0]}"
-            return "No results found"
-        except Exception as e:
-            # Return any errors (optional)
-            return f"An error occurred: {e}"
-        finally:
+      
+        cursor.execute(f"SELECT flag FROM secrets WHERE id={query}")
+        result = cursor.fetchone()
+        if result:
+            flag = result[0]
+            message = f"Flag found: {flag}\n\nThis appears to be encoded. Try decoding it from base64!"
+            return render_template("admin.html", 
+                                result=message,
+                                error=False)
+        return render_template("admin.html", 
+                            result='No results found',
+                            error=False)
+    except sqlite3.Error as e:
+       
+        return render_template("admin.html", 
+                            result=f"Database error: {str(e)}",
+                            error=True)
+    except Exception as e:
+  
+        return render_template("admin.html",
+                            result=f"Error: {str(e)}",
+                            error=True)
+    finally:
+        if 'conn' in locals():
             conn.close()
 
-    return "Method Not Allowed"
 
-
-# Debug endpoint
 @app.route('/debug')
 def debug():
     return {
         'session': dict(session),
         'cookies': request.cookies,
-        'is_admin': session.get('is_admin', False)
+        'is_admin_cookie': request.cookies.get("is_admin", "Not set")
     }
 
 if __name__ == "__main__":

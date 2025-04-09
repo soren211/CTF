@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>User Dashboard</title>
-</head>
-<body>
-    <h1>Welcome, User!</h1>
-    <p>Nothing to see here. (Hint: Become an admin by modifying cookies!)</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}User Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Welcome, {{ session.username }}!</h1>
+    <p>You're logged in as a regular user.</p>
+    
+    <div class="hint">
+        <strong>Challenge:</strong> Find a way to access the admin dashboard.
+        <br><br>
+        <em>Hint: Maybe try inspecting the page, there could be something worthwile in the cookies.</em>
+    </div>
+{% endblock %}

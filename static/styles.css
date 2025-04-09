@@ -1,0 +1,116 @@
+:root {
+    --bg-dark: #121212;
+    --bg-darker: #0a0a0a;
+    --accent: #4e9af1;
+    --accent-hover: #3a7bc8;
+    --text: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --danger: #e74c3c;
+    --success: #2ecc71;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--bg-darker);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5rem;
+}
+
+form {
+    margin: 1.5rem 0;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: var(--text);
+}
+
+button {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+}
+
+.hint {
+    background-color: #1e1e1e;
+    padding: 1rem;
+    border-left: 4px solid var(--accent);
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.credential-box {
+    background-color: #1a1a1a;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    font-family: monospace;
+}
+
+.footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Admin specific */
+.admin-panel {
+    border: 1px solid var(--accent);
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin-top: 2rem;
+}
+
+/* Results display */
+.result {
+    font-family: monospace;
+    background-color: #1a1a1a;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    color: var(--success);
+}
+
+.error {
+    color: var(--danger);
+    font-family: monospace;
+    background-color: #1a1a1a;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+}

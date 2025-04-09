@@ -1,14 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Dashboard</title>
-</head>
-<body>
-    <h1>Welcome, Admin!</h1>
-    <form action="/admin/search" method="POST">
-        <input type="text" name="query" placeholder="Search by ID (e.g., 1)" required>
-        <button type="submit">Search</button>
-    </form>
-    <p>Hint: Use SQL injection (<code>1 UNION SELECT flag FROM secrets --</code>).</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, {{ session.username }}. You have administrative privileges.</p>
+    
+    <div class="admin-panel">
+        <h2>Flag Search</h2>
+        <form action="/admin/search" method="POST">
+            <input type="text" name="query" placeholder="Enter secret ID (e.g. 1)" required>
+            <button type="submit">Search</button>
+        </form>
+        
+        <div class="hint">
+             <strong>SQL Injection Test:</strong> Try entering some sort of injection for sqlite<!-- <code>1 UNION SELECT flag FROM secrets --</code> -->
+        </div>
+        
+        {% if result %}
+            <div class="{% if error %}error{% else %}result{% endif %}">
+                {{ result }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

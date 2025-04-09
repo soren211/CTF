@@ -9,9 +9,7 @@ import os
 app = Flask(__name__, template_folder='templates')
 
 app.config.update(
-    SECRET_KEY="supersecretkey", 
-    SERVER_NAME='localhost:5001',
-    PREFERRED_URL_SCHEME='http'
+    SECRET_KEY="supersecretkey"
 )
 
 '''
@@ -29,6 +27,8 @@ app.config.update(
 raw_key = b"IT101_CTF_Key_32bytes_long_12345"
 key = base64.urlsafe_b64encode(raw_key)
 cipher = Fernet(key)
+
+
 
 # Database 
 def init_db():
@@ -74,6 +74,11 @@ def init_db():
     finally:
         if 'conn' in locals():
             conn.close()
+
+
+@app.route("/")
+def home():
+    return "CTF is working! Routes: /login, /admin/search, /debug"
 
 # Nuclear reset endpoint
 @app.route('/nuke_everything')

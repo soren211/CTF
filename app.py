@@ -76,9 +76,6 @@ def init_db():
             conn.close()
 
 
-@app.route("/")
-def home():
-    return "CTF is working! Routes: /login, /admin/search, /debug"
 
 # Nuclear reset endpoint
 @app.route('/nuke_everything')
@@ -94,10 +91,13 @@ def nuke_everything():
     return resp
 
 # Main routes
+# Remove any duplicate @app.route("/") decorators
+# Keep only one definition like this:
+
 @app.route("/")
 def home():
     if "username" in session:
-        # Check the cookie (convert string to int)
+        # Check the simple cookie (convert string to int)
         is_admin = int(request.cookies.get("is_admin", 0))
         if is_admin:
             return render_template("admin.html")

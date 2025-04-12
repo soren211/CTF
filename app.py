@@ -58,9 +58,8 @@ def init_db():
         cursor.execute("INSERT INTO users VALUES (1, 'admin', 'password123', 1)")
         cursor.execute("INSERT INTO users VALUES (2, 'user', 'password123', 0)")
         
-        raw_flag = "IT101{S053N5_F1AG_19384372}"
+        raw_flag = 'itc101{S053N5_F1AG_19384372}'
 
-        
         data_bytes = raw_flag.encode('utf-8')
         encoded_bytes = base64.b64encode(data_bytes)
         flag = encoded_bytes.decode('utf-8')
